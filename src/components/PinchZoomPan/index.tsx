@@ -1,0 +1,1 @@
+export {PinchZoomPan} from './PinchZoomPan';
