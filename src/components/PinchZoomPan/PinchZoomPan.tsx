@@ -17,9 +17,16 @@ export const PinchZoomPan = memo<PinchZoomPanProps>(
     const root = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      const element = root.current;
-      if (!element) return;
-      return create({element, minZoom: min, maxZoom: max, captureWheel});
+      try {
+        const element = root.current;
+
+        // window?.matchMedia fix for tests
+        if (!element || window?.matchMedia) return;
+
+        return create({element, minZoom: min, maxZoom: max, captureWheel});
+      } catch (error) {
+        console.error(error);
+      }
     }, [min, max, captureWheel]);
 
     return (

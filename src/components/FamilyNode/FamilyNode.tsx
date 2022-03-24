@@ -10,6 +10,8 @@ interface FamilyNodeProps {
 }
 
 export const FamilyNode = memo(({node, isRoot, style}: FamilyNodeProps) => {
+  console.log('Render: FamilyNode');
+
   return (
     <div className={styles.root} style={style} title={node.id}>
       <div
