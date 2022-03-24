@@ -36,13 +36,13 @@ export const Tree = memo(() => {
   );
 
   return (
-    <div>
-      <h1>{bears}</h1>
-      <button onClick={addBear}>addBear</button>
-      <button onClick={decBear}>decBear</button>
+    <PinchZoomPan min={0.5} max={2.5} captureWheel className={styles.wrapper}>
+      <div>
+        <h1>{bears}</h1>
+        <button onClick={addBear}>addBear</button>
+        <button onClick={decBear}>decBear</button>
 
-      <div>Tree</div>
-      <PinchZoomPan min={0.5} max={2.5} captureWheel className={styles.wrapper}>
+        <div>Tree</div>
         <ReactFamilyTree
           nodes={nodes as Node[]}
           rootId={rootId}
@@ -51,7 +51,7 @@ export const Tree = memo(() => {
           className={styles.tree}
           renderNode={onRenderNode}
         />
-      </PinchZoomPan>
-    </div>
+      </div>
+    </PinchZoomPan>
   );
 });
