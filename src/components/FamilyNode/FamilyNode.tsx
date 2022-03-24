@@ -11,10 +11,10 @@ interface FamilyNodeProps {
 }
 
 export const FamilyNode = memo(({node, isRoot, style}: FamilyNodeProps) => {
+  console.log('Render: FamilyNode', node);
+
   const {addChild} = useStore();
 
-  console.log('Render: FamilyNode', node);
-  console.log('addChild');
   const onAddChild = useCallback(() => {
     addChild(node?.id);
   }, [addChild, node?.id]);

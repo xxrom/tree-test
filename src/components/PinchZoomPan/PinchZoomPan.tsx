@@ -21,7 +21,7 @@ export const PinchZoomPan = memo<PinchZoomPanProps>(
         const element = root.current;
 
         // window?.matchMedia fix for tests
-        if (!element || !window?.matchMedia) return;
+        if (!element || !window?.matchMedia('')?.matches) return;
 
         return create({element, minZoom: min, maxZoom: max, captureWheel});
       } catch (error) {
