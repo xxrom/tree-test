@@ -1,7 +1,7 @@
 import {RelType, Gender} from 'relatives-tree/lib/types';
 import {Source} from './useStore';
 
-export const data: Source = [
+export const nodes: Source = [
   {
     id: 'dyTpfj6sr',
     gender: 'male' as Gender,

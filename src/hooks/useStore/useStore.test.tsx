@@ -1,4 +1,4 @@
-import '../matchMedia';
+import '../../matchMedia';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {cleanup} from '@testing-library/react';
 import {useStore} from './useStore';

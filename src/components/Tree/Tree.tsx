@@ -7,7 +7,7 @@ import {PinchZoomPan} from '../PinchZoomPan';
 import {useStore} from '../../hooks/useStore';
 
 const WIDTH = 120;
-const HEIGHT = 100;
+const HEIGHT = 150;
 
 export const Tree = memo(() => {
   const {nodes, bears, addBear, decBear} = useStore();

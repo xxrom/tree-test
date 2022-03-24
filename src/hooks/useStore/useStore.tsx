@@ -1,6 +1,6 @@
 import create from 'zustand';
 import {Node, RelType, Gender} from 'relatives-tree/lib/types';
-import {data} from './data';
+import {nodes} from './nodes';
 import {v4} from 'uuid';
 
 export type Source = Array<Node>;
@@ -28,7 +28,7 @@ const getNewChild = (parentId: string) => ({
 });
 
 export const useStore = create<NodesType>(set => ({
-  nodes: data,
+  nodes,
   bears: 0,
   addBear: () => set(state => ({bears: state.bears + 1})),
   decBear: () => set(state => ({bears: state.bears - 1})),
