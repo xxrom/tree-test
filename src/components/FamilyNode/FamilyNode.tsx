@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {ExtNode} from 'relatives-tree/lib/types';
+import {useStore} from '../../hooks';
 import styles from './FamilyNode.module.css';
 
 interface FamilyNodeProps {
@@ -10,7 +11,13 @@ interface FamilyNodeProps {
 }
 
 export const FamilyNode = memo(({node, isRoot, style}: FamilyNodeProps) => {
-  console.log('Render: FamilyNode');
+  const {addChild} = useStore();
+
+  console.log('Render: FamilyNode', node);
+  console.log('addChild');
+  const onAddChild = useCallback(() => {
+    addChild(node?.id);
+  }, [addChild, node?.id]);
 
   return (
     <div className={styles.root} style={style} title={node.id}>
@@ -19,8 +26,10 @@ export const FamilyNode = memo(({node, isRoot, style}: FamilyNodeProps) => {
           styles?.inner,
           styles[node.gender],
           isRoot && styles.isRoot,
-        )}
-      />
+        )}>
+        <div>{node?.id}</div>
+        <button onClick={onAddChild}>addChild</button>
+      </div>
       {node.hasSubTree && (
         <div className={classNames(styles.sub, styles[node.gender])} />
       )}

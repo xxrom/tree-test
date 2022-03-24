@@ -6,17 +6,18 @@ import styles from './Tree.module.css';
 import {PinchZoomPan} from '../PinchZoomPan';
 import {useStore} from '../../hooks/useStore';
 
-const WIDTH = 70;
-const HEIGHT = 80;
+const WIDTH = 120;
+const HEIGHT = 100;
 
 export const Tree = memo(() => {
   const {nodes, bears, addBear, decBear} = useStore();
+  console.log('Render: Tree', nodes);
 
   const [rootId] = useState(nodes[0].id);
 
   const onRenderNode = useCallback(
     (node: ExtNode) => {
-      console.log('node', node);
+      console.log('onRenderNode: ', node);
 
       return (
         <FamilyNode
