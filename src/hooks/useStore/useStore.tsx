@@ -12,6 +12,7 @@ export type Source = Array<PersonType>;
 
 export interface StoreType {
   nodes: Source;
+  rootId: string;
   addChild: (parentId: string) => void;
   delNode: (nodeId: string) => void;
 }
@@ -43,6 +44,7 @@ const userApiUrl = 'https://randomuser.me/api/';
 
 export const useStore = create<StoreType>(set => ({
   nodes,
+  rootId: nodes[0].id,
   addChild: async parentId => {
     const newChild = await getNewChild(parentId);
 
@@ -109,6 +111,8 @@ export const useStore = create<StoreType>(set => ({
 
       return {
         ...state,
+        rootId:
+          state.rootId === nodeId ? deletedNode?.children[0]?.id : state.rootId,
         nodes: nodes3,
       };
     }),

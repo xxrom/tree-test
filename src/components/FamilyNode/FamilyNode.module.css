@@ -2,7 +2,7 @@
   position: absolute;
   display: flex;
   flex: 1;
-  padding: 10px;
+  padding: 15px 10px 10px;
 }
 
 .text {
@@ -14,14 +14,21 @@
   white-space: nowrap;
 }
 .button {
-  height: 20px;
-  width: 20px;
+  height: 25px;
+  width: 25px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 4px;
+  margin: 2px;
   border-radius: 100%;
 }
+.buttonAdd {
+  background: green;
+}
+.buttonDel {
+  background: red;
+}
+
 .info {
   display: flex;
   flex-direction: column;

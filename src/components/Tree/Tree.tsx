@@ -1,4 +1,4 @@
-import {memo, useCallback, useState} from 'react';
+import {memo, useCallback} from 'react';
 import ReactFamilyTree from 'react-family-tree';
 import {FamilyNode} from '../FamilyNode';
 import styles from './Tree.module.css';
@@ -9,10 +9,8 @@ export const WIDTH = 100;
 export const HEIGHT = 200;
 
 export const Tree = memo(() => {
-  const {nodes} = useStore();
+  const {nodes, rootId} = useStore();
   console.log('nodes', nodes);
-
-  const [rootId] = useState(nodes[0].id);
 
   const onRenderNode = useCallback(
     node => (

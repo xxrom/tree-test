@@ -15,6 +15,7 @@ interface FamilyNodeProps {
   isRoot: boolean;
   left: number;
   top: number;
+  children?: any;
 }
 
 export const FamilyNode = memo(
@@ -24,6 +25,7 @@ export const FamilyNode = memo(
     lastName,
     gender,
     photoUrl,
+    children,
     hasSubTree,
     isRoot,
     left,
@@ -77,14 +79,22 @@ export const FamilyNode = memo(
           </div>
 
           <div className={styles.control}>
-            <button className={styles.button} onClick={onAddChild}>
+            <button
+              className={classNames(styles.button, styles.buttonAdd)}
+              onClick={onAddChild}>
               +
             </button>
-            <button className={styles.button} onClick={onDelNode}>
-              -
-            </button>
+
+            {(!isRoot || (isRoot && children.length === 1)) && (
+              <button
+                className={classNames(styles.button, styles.buttonDel)}
+                onClick={onDelNode}>
+                -
+              </button>
+            )}
           </div>
         </div>
+
         {hasSubTree && (
           <div className={classNames(styles.sub, styles[gender])} />
         )}
