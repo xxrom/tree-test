@@ -1,7 +1,7 @@
 import {RelType, Gender} from 'relatives-tree/lib/types';
 import {Source} from './useStore';
 
-export const nodes: Source = [
+export const twoNodes: Source = [
   {
     id: 'dyTpfj6sr',
     gender: 'male' as Gender,
@@ -35,3 +35,15 @@ export const nodes: Source = [
     children: [],
   },
 ];
+
+export const oneNodeObject = {
+  id: 'ahfR5lRRR',
+  gender: 'female' as Gender,
+  firstName: 'first2',
+  lastName: 'last2',
+  photoUrl: '',
+  spouses: [],
+  siblings: [],
+  parents: [],
+  children: [],
+};

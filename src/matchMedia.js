@@ -1,3 +1,5 @@
+require('jest-fetch-mock').enableMocks();
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({

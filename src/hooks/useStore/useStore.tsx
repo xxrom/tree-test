@@ -1,6 +1,6 @@
 import create from 'zustand';
 import {Node, RelType} from 'relatives-tree/lib/types';
-import {nodes} from './nodes';
+import {twoNodes} from './nodes';
 import {v4} from 'uuid';
 
 export type PersonType = Node & {
@@ -19,8 +19,10 @@ export interface StoreType {
 
 const getNewChild = async (parentId: string) => {
   const response = await fetch(userApiUrl);
+  console.log('fetch reponse', response);
   const {results} = await response.json();
   const [item] = results;
+  console.log('fetch user', item);
 
   return {
     id: v4(),
@@ -43,12 +45,12 @@ const getNewChild = async (parentId: string) => {
 const userApiUrl = 'https://randomuser.me/api/';
 
 export const useStore = create<StoreType>(set => ({
-  nodes,
-  rootId: nodes[0].id,
+  nodes: twoNodes,
+  rootId: twoNodes[0].id,
   addChild: async parentId => {
     const newChild = await getNewChild(parentId);
 
-    set(state => {
+    return set(state => {
       const nodes = [...state.nodes].map(node => {
         if (node.id === parentId) {
           return {

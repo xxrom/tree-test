@@ -2,27 +2,39 @@ import '../../matchMedia';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {cleanup} from '@testing-library/react';
 import {useStore} from './useStore';
+import {oneNodeObject, twoNodes} from './nodes';
 
 describe('useStore', () => {
+  beforeEach(() => {
+    fetch.mockResponseOnce(JSON.stringify({results: [oneNodeObject]}));
+    //fetch.mockResponse(JSON.stringify({results: [oneNodeObject]}));
+  });
+
   afterEach(() => {
     jest.resetAllMocks();
     cleanup();
   });
 
-  it('call addChild(), nodes size + 1', () => {
+  it('call addChild(), nodes size + 1', async () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes} = result?.current;
 
     const nodesSize = nodes?.length;
 
-    act(() => {
-      result.current.addChild(nodes[0]?.id);
+    fetch.mockResponseOnce(() => {
+      console.log('mock fetch');
+
+      return Promise.resolve(JSON.stringify({results: [oneNodeObject]}));
+    });
+
+    await act(async () => {
+      await result.current.addChild(nodes[0]?.id);
     });
 
     expect(result.current.nodes.length).toEqual(nodesSize + 1);
   });
 
-  it('call addChild, parentNode.children + 1', () => {
+  xit('call addChild, parentNode.children + 1', async () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes} = result?.current;
 
@@ -39,7 +51,7 @@ describe('useStore', () => {
     );
   });
 
-  it('call addChild, parentNode.chiild.Id === lastNode.id', () => {
+  xit('call addChild, parentNode.chiild.Id === lastNode.id', () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes} = result?.current;
 
@@ -57,5 +69,19 @@ describe('useStore', () => {
     const nodesSize = result.current.nodes.length;
 
     expect(parentLastChildId).toEqual(result.current.nodes[nodesSize - 1].id);
+  });
+
+  xit('call delNode', () => {
+    const {result} = renderHook(() => useStore(state => state));
+    const {nodes, rootId} = result?.current;
+    const rootNodeId = nodes[0].id;
+
+    expect(rootId).toEqual(rootNodeId);
+
+    act(() => {
+      result.current.addChild(rootNodeId);
+    });
+
+    expect(rootId).toEqual(rootNodeId);
   });
 });
