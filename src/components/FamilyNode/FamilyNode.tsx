@@ -1,38 +1,94 @@
 import classNames from 'classnames';
-import React, {memo, useCallback} from 'react';
-import {ExtNode} from 'relatives-tree/lib/types';
+import {memo, useCallback, useMemo} from 'react';
+import shallow from 'zustand/shallow';
 import {useStore} from '../../hooks';
+import {HEIGHT, WIDTH} from '../Tree/Tree';
 import styles from './FamilyNode.module.css';
 
 interface FamilyNodeProps {
-  node: ExtNode;
+  id: string;
+  gender: string;
+  firstName: string;
+  lastName: string;
+  photoUrl: string;
+  hasSubTree: boolean;
   isRoot: boolean;
-  style?: React.CSSProperties;
+  left: number;
+  top: number;
 }
 
-export const FamilyNode = memo(({node, isRoot, style}: FamilyNodeProps) => {
-  console.log('Render: FamilyNode', node);
+export const FamilyNode = memo(
+  ({
+    id,
+    firstName,
+    lastName,
+    gender,
+    photoUrl,
+    hasSubTree,
+    isRoot,
+    left,
+    top,
+  }: FamilyNodeProps) => {
+    console.log('Render: FamilyNode', top, left);
 
-  const {addChild} = useStore();
+    const {addChild, delNode} = useStore(
+      state => ({addChild: state.addChild, delNode: state.delNode}),
+      shallow,
+    );
 
-  const onAddChild = useCallback(() => {
-    addChild(node?.id);
-  }, [addChild, node?.id]);
+    const getStyles = useCallback(
+      () => ({
+        width: WIDTH,
+        height: HEIGHT,
+        transform: `translate(${left * (WIDTH / 2)}px, ${top *
+          (HEIGHT / 2)}px)`,
+      }),
+      [left, top],
+    );
 
-  return (
-    <div className={styles.root} style={style} title={node.id}>
-      <div
-        className={classNames(
-          styles?.inner,
-          styles[node.gender],
-          isRoot && styles.isRoot,
-        )}>
-        <div>{node?.id}</div>
-        <button onClick={onAddChild}>addChild</button>
+    const style = useMemo(() => getStyles(), [getStyles]);
+
+    const onAddChild = useCallback(() => {
+      addChild(id);
+    }, [addChild, id]);
+    const onDelNode = useCallback(() => {
+      delNode(id);
+    }, [delNode, id]);
+
+    return (
+      <div className={styles.root} style={style}>
+        <div
+          className={classNames(
+            styles.inner,
+            styles[gender],
+            isRoot && styles.isRoot,
+          )}>
+          <div className={styles.info}>
+            {photoUrl && (
+              <picture>
+                <img className={styles.photo} src={photoUrl} alt="" />
+              </picture>
+            )}
+
+            <div className={styles.text}>{`${gender}:`}</div>
+
+            <div className={styles.text}>{firstName}</div>
+            <div className={styles.text}>{lastName}</div>
+          </div>
+
+          <div className={styles.control}>
+            <button className={styles.button} onClick={onAddChild}>
+              +
+            </button>
+            <button className={styles.button} onClick={onDelNode}>
+              -
+            </button>
+          </div>
+        </div>
+        {hasSubTree && (
+          <div className={classNames(styles.sub, styles[gender])} />
+        )}
       </div>
-      {node.hasSubTree && (
-        <div className={classNames(styles.sub, styles[node.gender])} />
-      )}
-    </div>
-  );
-});
+    );
+  },
+);

@@ -1,58 +1,38 @@
 import {memo, useCallback, useState} from 'react';
 import ReactFamilyTree from 'react-family-tree';
-import {Node, ExtNode} from 'relatives-tree/lib/types';
 import {FamilyNode} from '../FamilyNode';
 import styles from './Tree.module.css';
 import {PinchZoomPan} from '../PinchZoomPan';
 import {useStore} from '../../hooks/useStore';
 
-const WIDTH = 120;
-const HEIGHT = 150;
+export const WIDTH = 100;
+export const HEIGHT = 200;
 
 export const Tree = memo(() => {
-  const {nodes, bears, addBear, decBear} = useStore();
-  console.log('Render: Tree', nodes);
+  const {nodes} = useStore();
+  console.log('nodes', nodes);
 
   const [rootId] = useState(nodes[0].id);
 
   const onRenderNode = useCallback(
-    (node: ExtNode) => {
-      console.log('onRenderNode: ', node);
-
-      return (
-        <FamilyNode
-          key={node.id}
-          node={node}
-          isRoot={node.id === rootId}
-          style={{
-            width: WIDTH,
-            height: HEIGHT,
-            transform: `translate(${node.left * (WIDTH / 2)}px, ${node.top *
-              (HEIGHT / 2)}px)`,
-          }}
-        />
-      );
-    },
+    node => (
+      <FamilyNode key={node?.id} isRoot={node?.id === rootId} {...node} />
+    ),
     [rootId],
   );
 
   return (
     <PinchZoomPan min={0.5} max={2.5} captureWheel className={styles.wrapper}>
-      <div>
-        <h1>{bears}</h1>
-        <button onClick={addBear}>addBear</button>
-        <button onClick={decBear}>decBear</button>
+      <div>Tree</div>
 
-        <div>Tree</div>
-        <ReactFamilyTree
-          nodes={nodes as Node[]}
-          rootId={rootId}
-          width={WIDTH}
-          height={HEIGHT}
-          className={styles.tree}
-          renderNode={onRenderNode}
-        />
-      </div>
+      <ReactFamilyTree
+        nodes={nodes}
+        rootId={rootId}
+        width={WIDTH}
+        height={HEIGHT}
+        className={styles.tree}
+        renderNode={onRenderNode}
+      />
     </PinchZoomPan>
   );
 });
