@@ -6,8 +6,9 @@ import {oneNodeObject, twoNodes} from './nodes';
 
 describe('useStore', () => {
   beforeEach(() => {
-    fetch.mockResponseOnce(JSON.stringify({results: [oneNodeObject]}));
-    //fetch.mockResponse(JSON.stringify({results: [oneNodeObject]}));
+    fetch.resetMocks();
+    //fetch.mockResponseOnce(JSON.stringify({results: [oneNodeObject]}));
+    fetch.mockResponse(JSON.stringify({results: [oneNodeObject]}));
   });
 
   afterEach(() => {
@@ -21,20 +22,14 @@ describe('useStore', () => {
 
     const nodesSize = nodes?.length;
 
-    fetch.mockResponseOnce(() => {
-      console.log('mock fetch');
-
-      return Promise.resolve(JSON.stringify({results: [oneNodeObject]}));
-    });
-
     await act(async () => {
-      await result.current.addChild(nodes[0]?.id);
+      result.current.addChild(nodes[0]?.id);
     });
 
     expect(result.current.nodes.length).toEqual(nodesSize + 1);
   });
 
-  xit('call addChild, parentNode.children + 1', async () => {
+  it('call addChild, parentNode.children + 1', async () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes} = result?.current;
 
@@ -42,7 +37,7 @@ describe('useStore', () => {
     const parentId = parentNode?.id;
     const parentChildrenSize = parentNode?.children?.length;
 
-    act(() => {
+    await act(async () => {
       result.current.addChild(parentId);
     });
 
@@ -51,14 +46,14 @@ describe('useStore', () => {
     );
   });
 
-  xit('call addChild, parentNode.chiild.Id === lastNode.id', () => {
+  it('call addChild, parentNode.chiild.Id === lastNode.id', async () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes} = result?.current;
 
     const parentNode = nodes[0];
     const parentId = parentNode?.id;
 
-    act(() => {
+    await act(async () => {
       result.current.addChild(parentId);
     });
 
@@ -71,14 +66,14 @@ describe('useStore', () => {
     expect(parentLastChildId).toEqual(result.current.nodes[nodesSize - 1].id);
   });
 
-  xit('call delNode', () => {
+  it('call delNode', async () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes, rootId} = result?.current;
     const rootNodeId = nodes[0].id;
 
     expect(rootId).toEqual(rootNodeId);
 
-    act(() => {
+    await act(async () => {
       result.current.addChild(rootNodeId);
     });
 

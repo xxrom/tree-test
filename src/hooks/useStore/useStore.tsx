@@ -19,10 +19,8 @@ export interface StoreType {
 
 const getNewChild = async (parentId: string) => {
   const response = await fetch(userApiUrl);
-  console.log('fetch reponse', response);
   const {results} = await response.json();
   const [item] = results;
-  console.log('fetch user', item);
 
   return {
     id: v4(),
