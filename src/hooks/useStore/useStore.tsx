@@ -13,38 +13,18 @@ export type Source = Array<PersonType>;
 export interface StoreType {
   nodes: Source;
   rootId: string;
+  replaceNodes: (nodes: Source) => void;
   addChild: (parentId: string) => void;
   delNode: (nodeId: string) => void;
 }
-
-const getNewChild = async (parentId: string) => {
-  const response = await fetch(userApiUrl);
-  const {results} = await response.json();
-  const [item] = results;
-
-  return {
-    id: v4(),
-    gender: item?.gender || 'male',
-    firstName: item?.name?.first || 'firstName',
-    lastName: item?.name?.last || 'lastName',
-    photoUrl: item?.picture?.large || '',
-    spouses: [],
-    siblings: [],
-    parents: [
-      {
-        id: parentId,
-        type: 'blood' as RelType,
-      },
-    ],
-    children: [],
-  };
-};
 
 const userApiUrl = 'https://randomuser.me/api/';
 
 export const useStore = create<StoreType>(set => ({
   nodes: twoNodes,
   rootId: twoNodes[0].id,
+  replaceNodes: newNodes =>
+    set(state => ({...state, rootId: newNodes[0].id, nodes: newNodes})),
   addChild: async parentId => {
     const newChild = await getNewChild(parentId);
 
@@ -72,6 +52,15 @@ export const useStore = create<StoreType>(set => ({
   delNode: nodeId =>
     set(state => {
       const [deletedNode] = state?.nodes?.filter(node => node.id === nodeId);
+
+      if (nodeId === state.rootId && deletedNode.children.length !== 1) {
+        console.info(
+          'Node have more then one child or does`t have any',
+          deletedNode,
+        );
+
+        return state;
+      }
 
       // Removing node with id === nodeId
       const nodes0 = state?.nodes?.filter(node => node.id !== nodeId);
@@ -117,3 +106,26 @@ export const useStore = create<StoreType>(set => ({
       };
     }),
 }));
+
+const getNewChild = async (parentId: string) => {
+  const response = await fetch(userApiUrl);
+  const {results} = await response.json();
+  const [item] = results;
+
+  return {
+    id: v4(),
+    gender: item?.gender || 'male',
+    firstName: item?.name?.first || 'firstName',
+    lastName: item?.name?.last || 'lastName',
+    photoUrl: item?.picture?.large || '',
+    spouses: [],
+    siblings: [],
+    parents: [
+      {
+        id: parentId,
+        type: 'blood' as RelType,
+      },
+    ],
+    children: [],
+  };
+};

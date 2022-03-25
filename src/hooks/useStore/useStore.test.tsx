@@ -1,21 +1,34 @@
 import '../../matchMedia';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {cleanup} from '@testing-library/react';
+import fetch from 'jest-fetch-mock';
 import {useStore} from './useStore';
-import {oneNodeObject, twoNodes} from './nodes';
+import {oneNodeObject, twoNodes, threeNodes} from './nodes';
 
 describe('useStore', () => {
+  // Init store hook
+  const view = renderHook(() => useStore(state => state));
+
   beforeEach(() => {
     fetch.resetMocks();
-    //fetch.mockResponseOnce(JSON.stringify({results: [oneNodeObject]}));
     fetch.mockResponse(JSON.stringify({results: [oneNodeObject]}));
   });
 
   afterEach(() => {
     jest.resetAllMocks();
     cleanup();
+
+    const {replaceNodes} = view?.result?.current;
+
+    // Init with two Nodes before each test
+    act(() => {
+      replaceNodes(twoNodes);
+    });
   });
 
+  // ---
+  // addChild
+  // ---
   it('call addChild(), nodes size + 1', async () => {
     const {result} = renderHook(() => useStore(state => state));
     const {nodes} = result?.current;
@@ -66,17 +79,32 @@ describe('useStore', () => {
     expect(parentLastChildId).toEqual(result.current.nodes[nodesSize - 1].id);
   });
 
-  it('call delNode', async () => {
+  // ---
+  // delNode
+  // ---
+  it('delNode(), updated rootId', async () => {
     const {result} = renderHook(() => useStore(state => state));
-    const {nodes, rootId} = result?.current;
-    const rootNodeId = nodes[0].id;
+    const {replaceNodes} = result?.current;
 
-    expect(rootId).toEqual(rootNodeId);
-
-    await act(async () => {
-      result.current.addChild(rootNodeId);
+    // Init with two Nodes before each test
+    act(() => {
+      replaceNodes(twoNodes);
     });
 
+    const {nodes, rootId} = result?.current;
+
+    const rootNodeId = nodes[0].id;
+    const nextNodeId = nodes[1].id;
+
+    // Check first node.id with rootId
     expect(rootId).toEqual(rootNodeId);
+
+    // Remove RootNode
+    await act(async () => {
+      result.current.delNode(rootNodeId);
+    });
+
+    // Check updated rootId with nextNodeId
+    expect(result?.current?.rootId).toEqual(nextNodeId);
   });
 });
