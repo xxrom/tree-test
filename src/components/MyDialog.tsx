@@ -17,7 +17,7 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
     lastName: '',
     firstName: '',
   });
-  const [gender, setGender] = useState('male');
+  const [gender, setGender] = useState();
 
   const closeModal = useCallback(() => {
     setUserInfo({});
@@ -43,9 +43,10 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
     () =>
       typeof userInfo?.firstName !== 'string' ||
       typeof userInfo.lastName !== 'string' ||
-      userInfo?.firstName?.length < 3 ||
-      userInfo?.lastName?.length < 3,
-    [userInfo?.firstName, userInfo.lastName],
+      userInfo?.firstName?.length < 2 ||
+      userInfo?.lastName?.length < 2 ||
+      !gender,
+    [gender, userInfo?.firstName, userInfo.lastName],
   );
 
   return (
@@ -123,7 +124,7 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
                 </div>
 
                 <p className="my-2 mt-5 text-md text-gray-500">
-                  Choose gender.
+                  Choose gender:
                 </p>
 
                 <div className="mt-4">

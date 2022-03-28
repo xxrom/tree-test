@@ -65,9 +65,11 @@ export const FamilyNode = memo(
           className={classNames(
             styles.inner,
             'p-4 py-6 ring-2 ring-purple-500 rounded-2xl',
-            gender === 'male' ? 'bg-sky-100' : 'bg-purple-100',
-            isRoot &&
-              'ring-blue-800 ring-4 ring-purple-700 shadow-lg shadow-purple-500',
+            gender === 'male'
+              ? 'bg-sky-100 ring-sky-700'
+              : 'bg-purple-100 ring-purple-700',
+            isRoot && 'ring-4 shadow-lg ring-purple-800 shadow-purple-700',
+            isRoot && gender === 'male' && 'ring-sky-800 shadow-sky-700',
           )}>
           <div className={styles.info}>
             {photoUrl && (

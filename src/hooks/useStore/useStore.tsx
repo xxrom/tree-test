@@ -35,6 +35,7 @@ export const useStore = create<StoreType>(set => ({
     const newChild = await getNewChild(parentId, fromUser);
 
     return set(state => {
+      // Update parent node children list
       const nodes = [...state.nodes].map(node => {
         if (node.id === parentId) {
           return {
@@ -57,6 +58,7 @@ export const useStore = create<StoreType>(set => ({
   },
   delNode: nodeId =>
     set(state => {
+      // Find deleted node
       const [deletedNode] = state?.nodes?.filter(node => node.id === nodeId);
 
       if (nodeId === state.rootId && deletedNode.children.length !== 1) {
