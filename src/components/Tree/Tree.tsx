@@ -5,8 +5,8 @@ import styles from './Tree.module.css';
 import {PinchZoomPan} from '../PinchZoomPan';
 import {useStore} from '../../hooks/useStore';
 
-export const WIDTH = 100;
-export const HEIGHT = 200;
+export const WIDTH = 150;
+export const HEIGHT = 220;
 
 export const Tree = memo(() => {
   const {nodes, rootId} = useStore();

@@ -3,6 +3,7 @@
   display: flex;
   flex: 1;
   padding: 15px 10px 10px;
+  z-index: 1;
 }
 
 .text {
@@ -16,14 +17,17 @@
 .button {
   height: 25px;
   width: 25px;
+  font-size: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin: 2px;
+  padding-bottom: 2px;
+  border: 1px solid black;
   border-radius: 100%;
 }
 .buttonAdd {
-  background: green;
+  background: white;
 }
 .buttonDel {
   background: red;
@@ -47,6 +51,10 @@
   border-radius: 1rem;
   border: 1px solid gray;
   box-shadow: 2px 2px 2px 0px #00000066;
+}
+
+.control {
+  display: flex;
 }
 
 .male {

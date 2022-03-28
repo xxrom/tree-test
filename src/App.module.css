@@ -20,7 +20,7 @@
   justify-content: space-between;
   background: #fff;
   border-bottom: 1px solid #ddd;
-  z-index: 999;
+  z-index: 30;
 }
 
 .title {

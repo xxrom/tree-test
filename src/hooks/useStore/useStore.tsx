@@ -10,11 +10,17 @@ export type PersonType = Node & {
 };
 export type Source = Array<PersonType>;
 
+export type FromUserType = {
+  gender?: 'male' | 'female';
+  firstName?: string;
+  lastName?: string;
+};
+
 export interface StoreType {
   nodes: Source;
   rootId: string;
   replaceNodes: (nodes: Source) => void;
-  addChild: (parentId: string) => void;
+  addChild: (parentId: string, fromUser?: FromUserType) => void;
   delNode: (nodeId: string) => void;
 }
 
@@ -25,8 +31,8 @@ export const useStore = create<StoreType>(set => ({
   rootId: twoNodes[0].id,
   replaceNodes: newNodes =>
     set(state => ({...state, rootId: newNodes[0].id, nodes: newNodes})),
-  addChild: async parentId => {
-    const newChild = await getNewChild(parentId);
+  addChild: async (parentId, fromUser = {}) => {
+    const newChild = await getNewChild(parentId, fromUser);
 
     return set(state => {
       const nodes = [...state.nodes].map(node => {
@@ -107,16 +113,19 @@ export const useStore = create<StoreType>(set => ({
     }),
 }));
 
-const getNewChild = async (parentId: string) => {
+const getNewChild = async (
+  parentId: string,
+  {gender, firstName, lastName}: FromUserType,
+) => {
   const response = await fetch(userApiUrl);
   const {results} = await response.json();
   const [item] = results;
 
   return {
     id: v4(),
-    gender: item?.gender || 'male',
-    firstName: item?.name?.first || 'firstName',
-    lastName: item?.name?.last || 'lastName',
+    gender: gender || item?.gender || 'male',
+    firstName: firstName || item?.name?.first || 'firstName',
+    lastName: lastName || item?.name?.last || 'lastName',
     photoUrl: item?.picture?.large || '',
     spouses: [],
     siblings: [],

@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import {memo, useCallback, useMemo} from 'react';
 import shallow from 'zustand/shallow';
 import {useStore} from '../../hooks';
+import {FromUserType, PersonType} from '../../hooks/useStore/useStore';
+import {MyPopover} from '../MyPopover';
 import {HEIGHT, WIDTH} from '../Tree/Tree';
 import styles from './FamilyNode.module.css';
 
@@ -50,9 +52,12 @@ export const FamilyNode = memo(
 
     const style = useMemo(() => getStyles(), [getStyles]);
 
-    const onAddChild = useCallback(() => {
-      addChild(id);
-    }, [addChild, id]);
+    const onAddChild = useCallback(
+      fromUser => {
+        addChild(id, fromUser);
+      },
+      [addChild, id],
+    );
     const onDelNode = useCallback(() => {
       delNode(id);
     }, [delNode, id]);
@@ -79,15 +84,15 @@ export const FamilyNode = memo(
           </div>
 
           <div className={styles.control}>
-            <button
-              className={classNames(styles.button, styles.buttonAdd)}
-              onClick={onAddChild}>
-              +
-            </button>
+            <MyPopover onAdd={onAddChild}>
+              <span className={classNames(styles.button, 'bg-lime-400')}>
+                +
+              </span>
+            </MyPopover>
 
             {(!isRoot || (isRoot && children.length === 1)) && (
               <button
-                className={classNames(styles.button, styles.buttonDel)}
+                className={classNames(styles.button, 'bg-purple-400')}
                 onClick={onDelNode}>
                 -
               </button>
