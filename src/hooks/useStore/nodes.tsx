@@ -4,10 +4,10 @@ import {Source} from './useStore';
 export const twoNodes: Source = [
   {
     id: 'dyTpfj6sr',
-    gender: 'male' as Gender,
-    firstName: 'first',
-    lastName: 'last',
-    photoUrl: '',
+    gender: 'female' as Gender,
+    firstName: 'Hailey',
+    lastName: 'Ginnish',
+    photoUrl: 'https://randomuser.me/api/portraits/women/95.jpg',
     spouses: [],
     siblings: [],
     parents: [],
@@ -20,10 +20,10 @@ export const twoNodes: Source = [
   },
   {
     id: 'ahfR5lR2s',
-    gender: 'female' as Gender,
-    firstName: 'first',
-    lastName: 'last',
-    photoUrl: '',
+    gender: 'male' as Gender,
+    firstName: 'Abdullah',
+    lastName: 'Nybakk',
+    photoUrl: 'https://randomuser.me/api/portraits/men/76.jpg',
     spouses: [],
     siblings: [],
     parents: [

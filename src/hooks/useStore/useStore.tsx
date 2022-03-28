@@ -60,12 +60,7 @@ export const useStore = create<StoreType>(set => ({
       const [deletedNode] = state?.nodes?.filter(node => node.id === nodeId);
 
       if (nodeId === state.rootId && deletedNode.children.length !== 1) {
-        console.info(
-          'Node have more then one child or does`t have any',
-          deletedNode,
-        );
-
-        return state;
+        throw Error('Node have more then one child or does`t have any');
       }
 
       // Removing node with id === nodeId

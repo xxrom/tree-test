@@ -1,5 +1,6 @@
 import {Dialog, RadioGroup, Transition} from '@headlessui/react';
-import {Fragment, memo, useCallback, useState} from 'react';
+import {CheckIcon} from '@heroicons/react/solid';
+import {Fragment, memo, useCallback, useMemo, useState} from 'react';
 import {FromUserType} from '../hooks/useStore/useStore';
 import cx from 'classnames';
 
@@ -7,6 +8,8 @@ export type MyDialogProps = {
   children: React.ReactNode;
   onAdd: (fromUser: FromUserType) => void;
 };
+
+const genderList = ['male', 'female'];
 
 export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
   let [isOpen, setIsOpen] = useState(false);
@@ -36,9 +39,18 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
     closeModal();
   }, [closeModal, onAdd, userInfo]);
 
+  const isAddNewDisabled = useMemo(
+    () =>
+      typeof userInfo?.firstName !== 'string' ||
+      typeof userInfo.lastName !== 'string' ||
+      userInfo?.firstName?.length < 3 ||
+      userInfo?.lastName?.length < 3,
+    [userInfo?.firstName, userInfo.lastName],
+  );
+
   return (
     <>
-      <div className="">
+      <div>
         <span onClick={openModal}>{children}</span>
       </div>
 
@@ -81,86 +93,85 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
                   New user
                 </Dialog.Title>
 
+                <p className="my-2 mt-5 ml-1 text-lg text-gray-500">
+                  Enter firstName:
+                </p>
+
+                <div className="mt-2">
+                  <input
+                    name="firstName"
+                    type="text"
+                    value={userInfo?.firstName}
+                    onChange={onChange('firstName')}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-lg"
+                    placeholder="first name"
+                  />
+                </div>
+
+                <p className="my-2 mt-3 ml-1 text-lg text-gray-500">
+                  Enter lastName:
+                </p>
+                <div className="mt-2">
+                  <input
+                    name="lastName"
+                    type="text"
+                    value={userInfo?.lastName}
+                    onChange={onChange('lastName')}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-lg"
+                    placeholder="last name"
+                  />
+                </div>
+
                 <p className="my-2 mt-5 text-md text-gray-500">
                   Choose gender.
                 </p>
 
                 <div className="mt-4">
                   <RadioGroup value={gender} onChange={setGender}>
-                    <RadioGroup.Option value="male">
-                      {({checked}) => (
-                        <span
-                          className={cx(
-                            checked
-                              ? 'bg-sky-800 text-white'
-                              : 'bg-white bg-neutral-300',
-                            'block w-1/2 text-lg font-medium p-2 rounded-2xl relative rounded-lg shadow-md px-5 py-3 cursor-pointer flex focus:outline-none',
-                          )}>
-                          Male
-                        </span>
-                      )}
-                    </RadioGroup.Option>
-                    <RadioGroup.Option value="female">
-                      {({checked}) => (
-                        <span
-                          className={cx(
-                            checked
-                              ? 'bg-sky-900 bg-opacity-75 text-white'
-                              : 'bg-white bg-neutral-300',
-                            'mt-1 w-1/2 block text-lg font-medium p-2 rounded-2xl relative rounded-lg shadow-md px-5 py-3 cursor-pointer flex focus:outline-none',
-                          )}>
-                          Female
-                        </span>
-                      )}
-                    </RadioGroup.Option>
+                    {genderList?.map(value => (
+                      <RadioGroup.Option value={value} key={value}>
+                        {({checked}) => (
+                          <div
+                            className={cx(
+                              checked
+                                ? 'bg-sky-700 text-white hover:bg-sky-800'
+                                : 'bg-white text-neutral-500 bg-neutral-200 hover:bg-neutral-300',
+                              'block my-2 text-lg font-medium p-2 rounded-2xl relative rounded-lg shadow-md px-5 py-3 cursor-pointer flex focus:outline-none',
+                            )}>
+                            {value}
+                            {checked && (
+                              <div className="ml-4">
+                                <CheckIcon className="w-6 h-6" />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </RadioGroup.Option>
+                    ))}
                   </RadioGroup>
-
-                  <p className="my-2 mt-5 ml-1 text-md text-gray-500">
-                    Enter firstName:
-                  </p>
-
-                  <div className="mt-2">
-                    <input
-                      name="firstName"
-                      type="text"
-                      value={userInfo?.firstName}
-                      onChange={onChange('firstName')}
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder="first name"
-                    />
-                  </div>
-
-                  <p className="my-2 mt-3 ml-1 text-md text-gray-500">
-                    Enter lastName:
-                  </p>
-                  <div className="mt-2">
-                    <input
-                      name="lastName"
-                      type="text"
-                      value={userInfo?.lastName}
-                      onChange={onChange('lastName')}
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder="last name"
-                    />
-                  </div>
                 </div>
 
-                <div className="mt-7 flex justify-between">
+                <div className="mt-7 flex flex-wrap justify-between">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-lg font-medium text-blue-900 bg-blue-200 border border-transparent rounded-xl hover:bg-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    disabled={isAddNewDisabled}
+                    className={cx(
+                      'inline-flex justify-center my-1 px-4 py-2 text-lg font-medium text-blue-900 bg-blue-200 border border-transparent rounded-xl hover:bg-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500',
+                      isAddNewDisabled &&
+                        'cursor-not-allowed bg-neutral-200 text-neutral-400 hover:bg-neutral-200',
+                    )}
                     onClick={onAddClick}>
-                    Add new user
+                    Add person
                   </button>
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-lg font-medium text-white bg-purple-600 border border-transparent rounded-xl hover:bg-purple-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex justify-center my-1 px-4 py-2 text-lg font-medium text-white bg-purple-600 border border-transparent rounded-xl hover:bg-purple-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={onAddClick}>
-                    Random user
+                    Add random
                   </button>
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-lg font-medium text-blue-900 bg-neutral-200 border border-transparent rounded-xl hover:bg-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex justify-center my-1 px-4 py-2 text-lg font-medium text-neutral-900 bg-neutral-300 border border-transparent rounded-xl hover:bg-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={closeModal}>
                     Exit
                   </button>
