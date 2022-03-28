@@ -21,7 +21,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 2px;
+  margin: 10px 10px 5px;
   padding-bottom: 2px;
   border: 1px solid black;
   border-radius: 100%;
@@ -47,33 +47,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  border: 1px solid gray;
-  box-shadow: 2px 2px 2px 0px #00000066;
 }
 
 .control {
   display: flex;
-}
-
-.male {
-  background: #ddd;
-}
-
-.female {
-  background: #fae5fa;
-}
-
-.photo {
-  width: 64px;
-  width: 64px;
-  border-radius: 100%;
-  border: 1px solid gray;
-}
-
-.isRoot {
-  border: 3px solid rgba(0, 0, 0, 0.4);
 }
 
 .sub {

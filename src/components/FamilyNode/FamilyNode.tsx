@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import {memo, useCallback, useMemo} from 'react';
 import shallow from 'zustand/shallow';
 import {useStore} from '../../hooks';
-import {FromUserType, PersonType} from '../../hooks/useStore/useStore';
-import {MyPopover} from '../MyPopover';
+import {MyDialog} from '../MyDialog';
 import {HEIGHT, WIDTH} from '../Tree/Tree';
 import styles from './FamilyNode.module.css';
 
@@ -33,8 +32,6 @@ export const FamilyNode = memo(
     left,
     top,
   }: FamilyNodeProps) => {
-    console.log('Render: FamilyNode', top, left);
-
     const {addChild, delNode} = useStore(
       state => ({addChild: state.addChild, delNode: state.delNode}),
       shallow,
@@ -67,32 +64,42 @@ export const FamilyNode = memo(
         <div
           className={classNames(
             styles.inner,
-            styles[gender],
-            isRoot && styles.isRoot,
+            'p-4 py-6 ring-2 ring-purple-500 rounded-2xl',
+            gender === 'male' ? 'bg-sky-100' : 'bg-purple-100',
+            isRoot &&
+              'ring-blue-800 ring-4 ring-purple-700 shadow-lg shadow-purple-500',
           )}>
           <div className={styles.info}>
             {photoUrl && (
               <picture>
-                <img className={styles.photo} src={photoUrl} alt="" />
+                <img
+                  className="inline-block h-24 w-24 rounded-full ring-2 ring-white"
+                  src={photoUrl}
+                  alt=""
+                />
               </picture>
             )}
 
-            <div className={styles.text}>{`${gender}:`}</div>
+            <div className={styles.text}>{gender}</div>
 
             <div className={styles.text}>{firstName}</div>
             <div className={styles.text}>{lastName}</div>
           </div>
 
           <div className={styles.control}>
-            <MyPopover onAdd={onAddChild}>
-              <span className={classNames(styles.button, 'bg-lime-400')}>
+            <MyDialog onAdd={onAddChild}>
+              <span
+                className={classNames(
+                  styles.button,
+                  'cursor-pointer bg-purple-400',
+                )}>
                 +
               </span>
-            </MyPopover>
+            </MyDialog>
 
             {(!isRoot || (isRoot && children.length === 1)) && (
               <button
-                className={classNames(styles.button, 'bg-purple-400')}
+                className={classNames(styles.button, 'bg-blue-400')}
                 onClick={onDelNode}>
                 -
               </button>
@@ -101,7 +108,12 @@ export const FamilyNode = memo(
         </div>
 
         {hasSubTree && (
-          <div className={classNames(styles.sub, styles[gender])} />
+          <div
+            className={classNames(
+              styles.sub,
+              gender === 'male' ? 'bg-sky-100' : 'bg-purple-100',
+            )}
+          />
         )}
       </div>
     );

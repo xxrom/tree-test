@@ -3,7 +3,7 @@ import {act, renderHook} from '@testing-library/react-hooks';
 import {cleanup} from '@testing-library/react';
 import fetch from 'jest-fetch-mock';
 import {useStore} from './useStore';
-import {oneNodeObject, twoNodes, threeNodes} from './nodes';
+import {oneNodeObject, twoNodes} from './nodes';
 
 describe('useStore', () => {
   // Init store hook

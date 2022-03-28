@@ -1,7 +1,8 @@
 import {Popover, RadioGroup} from '@headlessui/react';
 import {memo, useCallback, useState} from 'react';
-import {FromUserType} from '../hooks/useStore/useStore';
+import {FromUserType} from '../../hooks/useStore/useStore';
 import cx from 'classnames';
+import styles from './MyPopover.module.css';
 
 export type MyPopoverProps = {
   children: React.ReactNode;
@@ -37,7 +38,7 @@ export const MyPopover = memo(({children, onAdd}: MyPopoverProps) => {
   );
 
   return (
-    <Popover className="relative translate-in-2">
+    <Popover className={cx('relative', styles.in)}>
       {({close}) => (
         <>
           <Popover.Button>{children}</Popover.Button>

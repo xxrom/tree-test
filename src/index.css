@@ -9,3 +9,8 @@
 body {
   margin: 0;
 }
+
+/* For links */
+i {
+  background: rgb(192, 132, 252) !important;
+}

@@ -5,12 +5,11 @@ import styles from './Tree.module.css';
 import {PinchZoomPan} from '../PinchZoomPan';
 import {useStore} from '../../hooks/useStore';
 
-export const WIDTH = 150;
-export const HEIGHT = 220;
+export const WIDTH = 220;
+export const HEIGHT = 270;
 
 export const Tree = memo(() => {
   const {nodes, rootId} = useStore();
-  console.log('nodes', nodes);
 
   const onRenderNode = useCallback(
     node => (
