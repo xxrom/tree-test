@@ -24,8 +24,6 @@ export interface StoreType {
   delNode: (nodeId: string) => void;
 }
 
-const userApiUrl = 'https://randomuser.me/api/';
-
 export const useStore = create<StoreType>(set => ({
   nodes: twoNodes,
   rootId: twoNodes[0].id,
@@ -109,6 +107,8 @@ export const useStore = create<StoreType>(set => ({
       };
     }),
 }));
+
+const userApiUrl = 'https://randomuser.me/api/';
 
 const getNewChild = async (
   parentId: string,

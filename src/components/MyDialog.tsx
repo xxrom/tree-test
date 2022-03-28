@@ -21,6 +21,7 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
 
   const closeModal = useCallback(() => {
     setUserInfo({});
+    setGender(undefined);
     setIsOpen(false);
   }, []);
   const openModal = useCallback(() => setIsOpen(true), []);
@@ -172,9 +173,9 @@ export const MyDialog = memo(({children, onAdd}: MyDialogProps) => {
                   </button>
                   <button
                     type="button"
-                    className="inline-flex justify-center my-1 px-4 py-2 text-lg font-medium text-neutral-900 bg-neutral-300 border border-transparent rounded-xl hover:bg-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex justify-center my-1 px-4 py-2 text-lg font-medium text-neutral-700 bg-neutral-300 border border-transparent rounded-xl hover:bg-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={closeModal}>
-                    Exit
+                    Close
                   </button>
                 </div>
               </div>
